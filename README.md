@@ -6,9 +6,10 @@ Bienvenue dans ce test technique destiné aux développeurs souhaitant rejoindre
 
 L'objectif est d'implémenter un **plugin Bukkit pour Minecraft 1.8.8** qui affiche un **scoreboard dynamique** à chaque joueur connecté. Ce scoreboard doit contenir les informations suivantes, mises à jour en temps réel :
 
-- Le pseudo du joueur
-- Le nombre de points de vie actuels
-- Le nombre de kills du joueur (uniquement contre d'autres joueurs)
+- Le pseudo du joueur.
+- Le nombre de points de vie actuels.
+- Le nombre de creepers tués.
+- Le nombre de pains fabriqués.
 
 Le projet est déjà initialisé avec Maven, et une classe `Main` est fournie pour faciliter le démarrage.
 
@@ -40,7 +41,7 @@ Ce test est **court** mais suffisamment révélateur pour comprendre votre appro
 ## ✅ Critères de réussite
 
 - Un scoreboard s’affiche à chaque connexion d’un joueur.
-- Le scoreboard est **mis à jour automatiquement** (PV, kills).
+- Le scoreboard est **mis à jour automatiquement** (PV, craft, etc).
 - Le code est **proprement structuré** : pas de tout dans une seule classe.
 - Bonne gestion des **listeners**, **runnables**, et **ressources mémoire**.
 - Vous ne devez **pas provoquer de lag** sur le serveur (attention aux tâches mal gérées !).
