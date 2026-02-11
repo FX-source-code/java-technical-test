@@ -2,3 +2,8 @@ name: ReviveTechnicalTest
 version: '${project.version}'
 main: fr.revivemc.Main
 author: ReviveMC
+
+commands :
+  playeria :
+    description : La commande principale de l'échosystème du plugin
+    permission : test.use
