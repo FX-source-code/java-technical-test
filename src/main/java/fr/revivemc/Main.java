@@ -10,7 +10,7 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         System.out.print("Le plugin a démarré avec succès");
         getCommand("playeria").setExecutor(new PlayeriaCom());
-        getServer().getPluginManager().registerEvents(new BreadListener(), this);
+        getServer().getPluginManager().registerEvents(new BreadListener(this), this);
     }
 
     @Override
