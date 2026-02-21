@@ -9,23 +9,25 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 
 public class BreadListener implements Listener {
-
 
     private final JavaPlugin pluginInstance;
     public BreadListener(JavaPlugin pluginInstance){
         this.pluginInstance = pluginInstance;
     }
+    static HashMap<UUID, Integer> nmbrPain = new HashMap<>();
 
-
-    public static int nmbrPain = 0;
 
     @EventHandler
     public void onCraft(CraftItemEvent event) {
         if (event.getWhoClicked() instanceof Player) {
 
             Player player = (Player) event.getWhoClicked();
+            UUID uuid = player.getUniqueId();
 
             if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.BREAD) {
                 // Shift click traité séparément
@@ -54,12 +56,16 @@ public class BreadListener implements Listener {
                                 }
                             }
                         }
-                        nmbrPain += nmbrPainApres - finalPainAvant;
+
+                        int ancienScore = nmbrPain.getOrDefault(uuid, 0);
+                        int diff = nmbrPainApres -finalPainAvant;
+                        nmbrPain.put(uuid, ancienScore + diff);
 
                     });
 
                 } else {
-                    nmbrPain += event.getCurrentItem().getAmount();
+                    int ancienScore = nmbrPain.getOrDefault(uuid, 0);
+                    nmbrPain.put(uuid, ancienScore + event.getCurrentItem().getAmount());
                 }
             }
         }

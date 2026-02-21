@@ -14,11 +14,13 @@ public class PlayeriaCom implements CommandExecutor {
                     commandSender.sendMessage("La liste des commandes disponibles : \n - help\n - bread : voir le nombre de pains craftés\n - clear : reset le compteur de pains à 0");
                     break;
                 case "bread":
-                    commandSender.sendMessage("Il y a " + BreadListener.nmbrPain + " de pain récolté(s)");
+//                    commandSender.sendMessage("Il y a " + BreadListener.nmbrPain + " de pain récolté(s)");
+                    commandSender.sendMessage("§4Unavailable");
                     break;
                 case "clear":
-                    BreadListener.nmbrPain = 0;
-                    commandSender.sendMessage("Il y a maintenant " + BreadListener.nmbrPain + " de pain récolté(s)");
+//                    BreadListener.nmbrPain = 0;
+//                    commandSender.sendMessage("Il y a maintenant " + BreadListener.nmbrPain + " de pain récolté(s)");
+                    commandSender.sendMessage("§4Unavailable");
                     break;
                 default:
                     commandSender.sendMessage("§4Mauvaise commande. \nListe des commandes disponibles avec /playeria : \n - /playeria help");
