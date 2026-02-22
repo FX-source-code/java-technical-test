@@ -16,10 +16,13 @@ import java.util.UUID;
 public class BreadListener implements Listener {
 
     private final JavaPlugin pluginInstance;
+
     public BreadListener(JavaPlugin pluginInstance){
         this.pluginInstance = pluginInstance;
     }
-    static HashMap<UUID, Integer> nmbrPain = new HashMap<>();
+
+
+    public static HashMap<UUID, Integer> nmbrPain = new HashMap<>();
 
 
     @EventHandler
@@ -27,7 +30,9 @@ public class BreadListener implements Listener {
         if (event.getWhoClicked() instanceof Player) {
 
             Player player = (Player) event.getWhoClicked();
+
             UUID uuid = player.getUniqueId();
+
 
             if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.BREAD) {
                 // Shift click traité séparément
