@@ -1,5 +1,6 @@
-package fr.revivemc.commands;
+package fr.revivemc.listeners;
 
+import fr.revivemc.ui.PlayeriaScoreboard;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,9 +17,11 @@ import java.util.UUID;
 public class BreadListener implements Listener {
 
     private final JavaPlugin pluginInstance;
+    private final PlayeriaScoreboard scoreboard;
 
-    public BreadListener(JavaPlugin pluginInstance){
+    public BreadListener(JavaPlugin pluginInstance, PlayeriaScoreboard scoreboard){
         this.pluginInstance = pluginInstance;
+        this.scoreboard = scoreboard;
     }
 
 
@@ -65,12 +68,14 @@ public class BreadListener implements Listener {
                         int ancienScore = nmbrPain.getOrDefault(uuid, 0);
                         int diff = nmbrPainApres -finalPainAvant;
                         nmbrPain.put(uuid, ancienScore + diff);
+                        scoreboard.update(player);
 
                     });
 
                 } else {
                     int ancienScore = nmbrPain.getOrDefault(uuid, 0);
                     nmbrPain.put(uuid, ancienScore + event.getCurrentItem().getAmount());
+                    scoreboard.update(player);
                 }
             }
         }

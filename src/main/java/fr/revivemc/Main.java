@@ -1,24 +1,51 @@
 package fr.revivemc;
 
-import fr.revivemc.commands.BreadListener;
+import fr.revivemc.listeners.BreadListener;
 import fr.revivemc.commands.PlayeriaCom;
+import fr.revivemc.ui.PlayeriaScoreboard;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.AbstractMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
-import static fr.revivemc.commands.BreadListener.nmbrPain;
+import static fr.revivemc.listeners.BreadListener.nmbrPain;
 
 public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        System.out.print("Le plugin a démarré avec succès");
-        getCommand("playeria").setExecutor(new PlayeriaCom());
-        getServer().getPluginManager().registerEvents(new BreadListener(this), this);
+        getLogger().info("Le plugin a démarré avec succès");
+
+        PlayeriaScoreboard scoreboard = new PlayeriaScoreboard(this);
+        getCommand("playeria").setExecutor(new PlayeriaCom(this));
+        getServer().getPluginManager().registerEvents(new BreadListener(this, scoreboard), this);
+
+        try {
+            readAndWrite();
+        } catch (IOException e) {
+            getLogger().severe("Erreur lors de la lecture du fichier data.yml !");
+            e.printStackTrace();
+        }
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                try {
+                    save();
+                    getLogger().info("Auto-save effectué.");
+                } catch (IOException e) {
+                    getLogger().severe("Erreur lors de l'auto-save !");
+                    e.printStackTrace();
+                }
+            }
+
+        }.runTaskTimer(this, 0L,6000L );
     }
 
     @Override
@@ -31,24 +58,33 @@ public class Main extends JavaPlugin {
         }
     }
 
+    public void createDataFile() {
+
+        File path = getDataFolder();
+        File file = new File(path,"data.yml");
+
+        path.mkdirs();
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            getLogger().severe("Erreur lors de la création du fichier data.yml !");
+            e.printStackTrace();
+        }
+    }
+
     public void save() throws IOException {
-        /*--------------------  SAUVEGARDE  --------------------- */
 
         File path = getDataFolder();
         File file = new File(path,"data.yml");
 
         // Sécurité au cas où
-        path.mkdirs();
         if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            createDataFile();
         }
         // Sauvegarde
         YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
 
+        data.set("bread", null);
         for (Map.Entry<UUID, Integer> entry : nmbrPain.entrySet()) {
 
             UUID uuid = entry.getKey();
@@ -57,5 +93,35 @@ public class Main extends JavaPlugin {
             data.set("bread." + uuid, score);
         }
         data.save(file);
+    }
+
+    public void readAndWrite() throws IOException {
+
+        File path = getDataFolder();
+        File file = new File(path,"data.yml");
+
+        // --- Si le fichier n'existe pas → sauvegarder puis lire ---
+        if (!file.exists()) {
+            createDataFile();
+        }
+
+        // --- Lire le fichier YML ---
+        YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
+        nmbrPain.clear();
+
+        if (data.getConfigurationSection("bread") != null) {
+
+            Set<String> key = data.getConfigurationSection("bread").getKeys(false);
+
+            for (String element : key) {
+                int score = data.getInt("bread." + element);
+                UUID uuid = UUID.fromString(element);
+                nmbrPain.put(uuid, score);
+            }
+        }
+    }
+
+    public AbstractMap<UUID, Integer> getPain() {
+        return nmbrPain;
     }
 }
