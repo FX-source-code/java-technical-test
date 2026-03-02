@@ -21,7 +21,7 @@ public class PlayeriaScoreboard {
         Objective objective = scoreboard.registerNewObjective("playeriaSc", "dummy");
 
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName("§l§bPlayeria");
+        objective.setDisplayName(" §b§lPlayeria");
 
         Score pain = objective.getScore("Pains : " + plugin.getPain().getOrDefault(player.getUniqueId(), 0));
         pain.setScore(1);
