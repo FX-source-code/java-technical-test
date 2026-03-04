@@ -21,10 +21,13 @@ public class PlayeriaScoreboard {
         Objective objective = scoreboard.registerNewObjective("playeriaSc", "dummy");
 
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(" §b§lPlayeria");
+        objective.setDisplayName("    §b§lPlayeria    ");
 
-        Score pain = objective.getScore("Pains : " + plugin.getPain().getOrDefault(player.getUniqueId(), 0));
-        pain.setScore(1);
+
+        objective.getScore("-------------------").setScore(4);
+        objective.getScore("Pseudo : §f" + player.getName()).setScore(3);
+        objective.getScore("Vie : §c" + (int) player.getHealth() + " ❤").setScore(2);
+        objective.getScore("Pains : " + plugin.getPain().getOrDefault(player.getUniqueId(), 0)).setScore(1);
 
         player.setScoreboard(scoreboard);
     }

@@ -2,8 +2,11 @@ package fr.revivemc;
 
 import fr.revivemc.listeners.BreadListener;
 import fr.revivemc.commands.PlayeriaCom;
+import fr.revivemc.listeners.ConnectListener;
+import fr.revivemc.listeners.HealthListener;
 import fr.revivemc.ui.PlayeriaScoreboard;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -25,6 +28,8 @@ public class Main extends JavaPlugin {
         PlayeriaScoreboard scoreboard = new PlayeriaScoreboard(this);
         getCommand("playeria").setExecutor(new PlayeriaCom(this));
         getServer().getPluginManager().registerEvents(new BreadListener(this, scoreboard), this);
+        getServer().getPluginManager().registerEvents(new ConnectListener(scoreboard), this);
+        getServer().getPluginManager().registerEvents(new HealthListener(this, scoreboard), this);
 
         try {
             readAndWrite();
