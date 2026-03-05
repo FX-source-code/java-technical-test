@@ -24,9 +24,10 @@ public class PlayeriaScoreboard {
         objective.setDisplayName("    §b§lPlayeria    ");
 
 
-        objective.getScore("-------------------").setScore(4);
-        objective.getScore("Pseudo : §f" + player.getName()).setScore(3);
-        objective.getScore("Vie : §c" + (int) player.getHealth() + " ❤").setScore(2);
+        objective.getScore("-------------------").setScore(5);
+        objective.getScore("Pseudo : §f" + player.getName()).setScore(4);
+        objective.getScore("Vie : §c" + (int) player.getHealth() + " ❤").setScore(3);
+        objective.getScore("Creepers : §2" + plugin.getCreeper().getOrDefault(player.getUniqueId(), 0)).setScore(2);
         objective.getScore("Pains : " + plugin.getPain().getOrDefault(player.getUniqueId(), 0)).setScore(1);
 
         player.setScoreboard(scoreboard);

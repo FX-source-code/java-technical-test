@@ -3,9 +3,11 @@ package fr.revivemc;
 import fr.revivemc.listeners.BreadListener;
 import fr.revivemc.commands.PlayeriaCom;
 import fr.revivemc.listeners.ConnectListener;
+import fr.revivemc.listeners.CreeperListener;
 import fr.revivemc.listeners.HealthListener;
 import fr.revivemc.ui.PlayeriaScoreboard;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Creeper;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -18,6 +20,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static fr.revivemc.listeners.BreadListener.nmbrPain;
+import static fr.revivemc.listeners.CreeperListener.nmbrCreeper;
 
 public class Main extends JavaPlugin {
 
@@ -30,6 +33,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BreadListener(this, scoreboard), this);
         getServer().getPluginManager().registerEvents(new ConnectListener(scoreboard), this);
         getServer().getPluginManager().registerEvents(new HealthListener(this, scoreboard), this);
+        getServer().getPluginManager().registerEvents(new CreeperListener(scoreboard), this);
 
         try {
             readAndWrite();
@@ -90,12 +94,20 @@ public class Main extends JavaPlugin {
         YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
 
         data.set("bread", null);
+        data.set("creeper", null);
         for (Map.Entry<UUID, Integer> entry : nmbrPain.entrySet()) {
 
             UUID uuid = entry.getKey();
             int score = entry.getValue();
 
             data.set("bread." + uuid, score);
+        }
+        for (Map.Entry<UUID, Integer> entry : nmbrCreeper.entrySet()) {
+
+            UUID uuid = entry.getKey();
+            int score = entry.getValue();
+
+            data.set("creeper." + uuid, score);
         }
         data.save(file);
     }
@@ -113,6 +125,7 @@ public class Main extends JavaPlugin {
         // --- Lire le fichier YML ---
         YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
         nmbrPain.clear();
+        nmbrCreeper.clear();
 
         if (data.getConfigurationSection("bread") != null) {
 
@@ -124,9 +137,23 @@ public class Main extends JavaPlugin {
                 nmbrPain.put(uuid, score);
             }
         }
+        if (data.getConfigurationSection("creeper") != null) {
+
+            Set<String> key = data.getConfigurationSection("creeper").getKeys(false);
+
+            for (String element : key) {
+                int score = data.getInt("creeper." + element);
+                UUID uuid = UUID.fromString(element);
+                nmbrCreeper.put(uuid, score);
+            }
+        }
     }
 
-    public AbstractMap<UUID, Integer> getPain() {
+    public Map<UUID, Integer> getPain() {
         return nmbrPain;
+    }
+
+    public Map<UUID, Integer> getCreeper() {
+        return nmbrCreeper;
     }
 }
