@@ -6,15 +6,14 @@ import fr.revivemc.listeners.ConnectListener;
 import fr.revivemc.listeners.CreeperListener;
 import fr.revivemc.listeners.HealthListener;
 import fr.revivemc.ui.PlayeriaScoreboard;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Creeper;
-import org.bukkit.event.Listener;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.AbstractMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -29,7 +28,12 @@ public class Main extends JavaPlugin {
         getLogger().info("Le plugin a démarré avec succès");
 
         PlayeriaScoreboard scoreboard = new PlayeriaScoreboard(this);
-        getCommand("playeria").setExecutor(new PlayeriaCom(this));
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            scoreboard.update(player);
+        }
+
+        getCommand("playeria").setExecutor(new PlayeriaCom(this, scoreboard));
         getServer().getPluginManager().registerEvents(new BreadListener(this, scoreboard), this);
         getServer().getPluginManager().registerEvents(new ConnectListener(scoreboard), this);
         getServer().getPluginManager().registerEvents(new HealthListener(this, scoreboard), this);
