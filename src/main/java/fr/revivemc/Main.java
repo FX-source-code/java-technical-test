@@ -25,7 +25,13 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("Le plugin a démarré avec succès");
+
+        try {
+            readAndWrite();
+        } catch (IOException e) {
+            getLogger().severe("Erreur lors de la lecture du fichier data.yml !");
+            e.printStackTrace();
+        }
 
         PlayeriaScoreboard scoreboard = new PlayeriaScoreboard(this);
 
@@ -38,13 +44,8 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ConnectListener(scoreboard), this);
         getServer().getPluginManager().registerEvents(new HealthListener(this, scoreboard), this);
         getServer().getPluginManager().registerEvents(new CreeperListener(scoreboard), this);
+        getLogger().info("Le plugin a démarré avec succès");
 
-        try {
-            readAndWrite();
-        } catch (IOException e) {
-            getLogger().severe("Erreur lors de la lecture du fichier data.yml !");
-            e.printStackTrace();
-        }
         new BukkitRunnable() {
 
             @Override
