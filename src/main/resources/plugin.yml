@@ -6,4 +6,13 @@ author: ReviveMC
 commands :
   playeria :
     description : La commande principale de l'échosystème du plugin
-    permission : test.use
+    permission : playeria
+
+permissions:
+  playeria:
+    description: Permet d'utiliser /playeria
+    default: true
+
+  playeria.admin:
+    description: Commandes admin Playeria
+    default: op

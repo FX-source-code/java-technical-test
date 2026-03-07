@@ -38,6 +38,10 @@ public class PlayeriaCom implements CommandExecutor {
                     commandSender.sendMessage("§e/playeria clear all §7- reset le compteur de creepers et de pains pour tous les joueurs");
                     break;
                 case "save":
+                    if (!commandSender.hasPermission("playeria.admin")) {
+                        commandSender.sendMessage("§cTu n'as pas la permission pour executer cette commande !");
+                        return true;
+                    }
                     try {
                         plugin.save();
                         commandSender.sendMessage("§2Sauvegarde réussie");
@@ -52,6 +56,10 @@ public class PlayeriaCom implements CommandExecutor {
                     }
                     break;
                 case "clear" :
+                    if (!commandSender.hasPermission("playeria.admin")) {
+                        commandSender.sendMessage("§cTu n'as pas la permission pour executer cette commande !");
+                        return true;
+                    }
                     if (args.length >= 2)  {
                         switch (args[1]){
                             case "bread" :
